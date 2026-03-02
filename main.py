@@ -137,6 +137,51 @@ def make_services_text(cfg: dict) -> str:
     return "\n".join(lines)
 
 
+from aiogram.types import InputMediaPhoto
+
+
+async def send_menu(message: Message, bot: Bot, cfg: dict):
+    """Send menu with photos if available, otherwise text."""
+    services = cfg.get("services", [])
+    if not services:
+        await message.answer("Список услуг пока не добавлен.")
+        return
+
+    # Services with photos — send as photo groups (max 10 per group)
+    photo_services = [s for s in services if s.get("photo")]
+    text_services = [s for s in services if not s.get("photo")]
+
+    if photo_services:
+        # Send in batches of 10 (Telegram limit for media groups)
+        for i in range(0, len(photo_services), 10):
+            batch = photo_services[i:i+10]
+            media = []
+            for s in batch:
+                caption = f"*{s['name']}* — {s.get('price', '?')}"
+                if s.get("description"):
+                    caption += f"\n{s['description']}"
+                media.append(InputMediaPhoto(
+                    media=s["photo"],
+                    caption=caption,
+                    parse_mode="Markdown"
+                ))
+            try:
+                await bot.send_media_group(message.chat.id, media)
+            except Exception as e:
+                logger.error(f"Media group error: {e}")
+                # Fallback to text
+                for s in batch:
+                    await message.answer(f"*{s['name']}* — {s.get('price','?')}\n{s.get('description','')}", parse_mode="Markdown")
+
+    # Remaining services without photos — text list
+    if text_services:
+        lines = [f"📋 *Ещё в меню:*\n"]
+        for s in text_services:
+            d = f" — {s['description']}" if s.get("description") else ""
+            lines.append(f"• *{s['name']}* — {s.get('price', '?')}{d}")
+        await message.answer("\n".join(lines), parse_mode="Markdown")
+
+
 def create_bot_router(cfg: dict) -> Router:
     """Create an aiogram Router with handlers for one bot."""
     router = Router()
@@ -174,8 +219,8 @@ def create_bot_router(cfg: dict) -> Router:
         await state.set_state(Chat.active)
 
     @router.message(Command("menu"))
-    async def cmd_menu(message: Message, **kw):
-        await message.answer(make_services_text(cfg), parse_mode="Markdown")
+    async def cmd_menu(message: Message, bot: Bot, **kw):
+        await send_menu(message, bot, cfg)
 
     @router.message(Command("book"))
     async def cmd_book(message: Message, **kw):
@@ -196,8 +241,8 @@ def create_bot_router(cfg: dict) -> Router:
         )
 
     @router.callback_query(F.data == "menu")
-    async def cb_menu(cb: CallbackQuery):
-        await cb.message.answer(make_services_text(cfg), parse_mode="Markdown")
+    async def cb_menu(cb: CallbackQuery, bot: Bot):
+        await send_menu(cb.message, bot, cfg)
         await cb.answer()
 
     @router.callback_query(F.data == "book")

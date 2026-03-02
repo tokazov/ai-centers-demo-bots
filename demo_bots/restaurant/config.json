@@ -5,43 +5,46 @@
   "bot_token": "${BOT_TOKEN}",
   "gemini_api_key": "${GEMINI_API_KEY}",
   "owner_telegram_id": "${OWNER_TELEGRAM_ID}",
-  
   "description": "Ресторан грузинской кухни с домашней атмосферой",
-  
   "address": "ул. Руставели 45, Тбилиси",
   "phone": "+995 555 123 456",
   "schedule": "Ежедневно 11:00-23:00",
-  
   "services": [
     {
       "name": "Хачапури по-аджарски",
       "price": "18₾",
-      "description": "Традиционная лодочка с сыром, маслом и яйцом"
+      "description": "Традиционная лодочка с сыром, маслом и яйцом",
+      "photo": "https://images.unsplash.com/photo-1587578855694-2900e3e9c50c?w=400&h=300&fit=crop"
     },
     {
       "name": "Хинкали (5 шт)",
       "price": "12₾",
-      "description": "Сочные хинкали с мясом/грибами"
+      "description": "Сочные хинкали с мясом/грибами",
+      "photo": "https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=400&h=300&fit=crop"
     },
     {
       "name": "Шашлык из свинины",
       "price": "22₾",
-      "description": "300г сочного мяса с овощами гриль"
+      "description": "300г сочного мяса с овощами гриль",
+      "photo": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop"
     },
     {
       "name": "Чахохбили",
       "price": "20₾",
-      "description": "Курица в томатном соусе с травами"
+      "description": "Курица в томатном соусе с травами",
+      "photo": "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop"
     },
     {
       "name": "Оджахури",
       "price": "16₾",
-      "description": "Жареная свинина с картофелем"
+      "description": "Жареная свинина с картофелем",
+      "photo": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop"
     },
     {
       "name": "Лобио",
       "price": "10₾",
-      "description": "Фасоль в остром соусе с орехами"
+      "description": "Фасоль в остром соусе с орехами",
+      "photo": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop"
     },
     {
       "name": "Пхали (3 вида)",
@@ -81,7 +84,8 @@
     {
       "name": "Харчо",
       "price": "15₾",
-      "description": "Острый суп с говядиной и рисом"
+      "description": "Острый суп с говядиной и рисом",
+      "photo": "https://images.unsplash.com/photo-1603105037880-880cd4f5b2a6?w=400&h=300&fit=crop"
     },
     {
       "name": "Детское меню",
@@ -89,7 +93,6 @@
       "description": "Паста/котлета с картофелем + сок"
     }
   ],
-  
   "knowledge_base": {
     "business_type": "Ресторан грузинской кухни",
     "features": [
@@ -117,7 +120,11 @@
       "banquet_capacity": 40,
       "deposit_required": false
     },
-    "payment_methods": ["Наличные", "Карта", "Apple Pay"],
+    "payment_methods": [
+      "Наличные",
+      "Карта",
+      "Apple Pay"
+    ],
     "parking": "Бесплатная парковка для гостей",
     "wifi": true
   }
