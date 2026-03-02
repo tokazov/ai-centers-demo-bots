@@ -41,6 +41,28 @@ class Chat(StatesGroup):
     active = State()
 
 
+class UploadPhoto(StatesGroup):
+    waiting_photo = State()
+
+
+# Persistent photo storage (file_id per bot per dish)
+# Structure: { "bot_slug": { "dish_name": "telegram_file_id" } }
+PHOTOS_PATH = os.getenv("PHOTOS_DB", "/app/photos.json")
+
+
+def load_photos() -> dict:
+    try:
+        with open(PHOTOS_PATH, "r") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def save_photos(data: dict):
+    with open(PHOTOS_PATH, "w") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
 def build_system_prompt(cfg: dict) -> str:
     """Build a rich system prompt from config.json."""
     name = cfg.get("business_name", "Бизнес")
@@ -147,20 +169,31 @@ async def send_menu(message: Message, bot: Bot, cfg: dict):
         await message.answer("Список услуг пока не добавлен.")
         return
 
-    # Services with photos — send as photo groups (max 10 per group)
-    photo_services = [s for s in services if s.get("photo")]
-    text_services = [s for s in services if not s.get("photo")]
+    slug = cfg.get("_slug", "")
+    photos_db = load_photos()
+    bot_photos = photos_db.get(slug, {})
+
+    photo_services = []
+    text_services = []
+    for s in services:
+        if s["name"] in bot_photos:
+            s["_file_id"] = bot_photos[s["name"]]
+            photo_services.append(s)
+        elif s.get("photo"):
+            photo_services.append(s)
+        else:
+            text_services.append(s)
 
     if photo_services:
-        # Send individually for reliability
         for s in photo_services:
             caption = f"<b>{s['name']}</b> — {s.get('price', '?')}"
             if s.get("description"):
                 caption += f"\n{s['description']}"
+            photo = s.get("_file_id") or s.get("photo", "")
             try:
                 await bot.send_photo(
                     message.chat.id,
-                    photo=s["photo"],
+                    photo=photo,
                     caption=caption,
                     parse_mode="HTML"
                 )
@@ -168,13 +201,12 @@ async def send_menu(message: Message, bot: Bot, cfg: dict):
                 logger.error(f"Photo send error for {s['name']}: {e}")
                 await message.answer(f"{s['name']} — {s.get('price','?')}\n{s.get('description','')}")
 
-    # Remaining services without photos — text list
     if text_services:
-        lines = [f"📋 *Ещё в меню:*\n"]
+        lines = ["📋 <b>Ещё в меню:</b>\n"]
         for s in text_services:
             d = f" — {s['description']}" if s.get("description") else ""
-            lines.append(f"• *{s['name']}* — {s.get('price', '?')}{d}")
-        await message.answer("\n".join(lines), parse_mode="Markdown")
+            lines.append(f"• <b>{s['name']}</b> — {s.get('price', '?')}{d}")
+        await message.answer("\n".join(lines), parse_mode="HTML")
 
 
 def create_bot_router(cfg: dict) -> Router:
@@ -216,6 +248,73 @@ def create_bot_router(cfg: dict) -> Router:
     @router.message(Command("menu"))
     async def cmd_menu(message: Message, bot: Bot, **kw):
         await send_menu(message, bot, cfg)
+
+    @router.message(Command("upload"))
+    async def cmd_upload(message: Message, state: FSMContext, **kw):
+        """Owner uploads photos for menu items."""
+        if message.from_user.id != OWNER_TELEGRAM_ID:
+            await message.answer("⛔ Только владелец может загружать фото.")
+            return
+        services = cfg.get("services", [])
+        if not services:
+            await message.answer("Нет услуг в конфиге.")
+            return
+        # Show numbered list of dishes
+        photos_db = load_photos()
+        bot_photos = photos_db.get(slug, {})
+        lines = [f"📸 <b>Загрузка фото для {bname}</b>\n\nВыберите блюдо (отправьте номер):\n"]
+        for i, s in enumerate(services, 1):
+            has_photo = "✅" if s["name"] in bot_photos else "❌"
+            lines.append(f"{i}. {has_photo} {s['name']} — {s.get('price', '?')}")
+        lines.append(f"\n📌 Отправьте номер от 1 до {len(services)}")
+        await message.answer("\n".join(lines), parse_mode="HTML")
+        await state.set_state(UploadPhoto.waiting_photo)
+        await state.update_data(upload_step="select")
+
+    @router.message(UploadPhoto.waiting_photo, F.text)
+    async def upload_select(message: Message, state: FSMContext, **kw):
+        """User selects dish number."""
+        data = await state.get_data()
+        services = cfg.get("services", [])
+
+        if data.get("upload_step") == "select":
+            try:
+                idx = int(message.text.strip()) - 1
+                if 0 <= idx < len(services):
+                    dish = services[idx]["name"]
+                    await state.update_data(upload_step="photo", dish_name=dish)
+                    await message.answer(f"📷 Отправьте фото для <b>{dish}</b>", parse_mode="HTML")
+                else:
+                    await message.answer(f"Номер от 1 до {len(services)}")
+            except ValueError:
+                await message.answer("Отправьте номер блюда")
+        else:
+            await state.clear()
+            await message.answer("Загрузка отменена.")
+
+    @router.message(UploadPhoto.waiting_photo, F.photo)
+    async def upload_photo(message: Message, state: FSMContext, **kw):
+        """Receive photo and save file_id."""
+        data = await state.get_data()
+        dish_name = data.get("dish_name")
+        if not dish_name:
+            await message.answer("Сначала выберите блюдо через /upload")
+            await state.clear()
+            return
+
+        file_id = message.photo[-1].file_id  # Best quality
+        photos_db = load_photos()
+        if slug not in photos_db:
+            photos_db[slug] = {}
+        photos_db[slug][dish_name] = file_id
+        save_photos(photos_db)
+
+        await state.clear()
+        await message.answer(
+            f"✅ Фото для <b>{dish_name}</b> сохранено!\n\n"
+            f"Загрузить ещё? Нажмите /upload",
+            parse_mode="HTML"
+        )
 
     @router.message(Command("book"))
     async def cmd_book(message: Message, **kw):

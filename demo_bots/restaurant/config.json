@@ -13,92 +13,77 @@
     {
       "name": "Хачапури по-аджарски",
       "price": "18₾",
-      "description": "Традиционная лодочка с сыром, маслом и яйцом",
-      "photo": "https://images.unsplash.com/photo-1587578855694-2900e3e9c50c?w=400&h=300&fit=crop"
+      "description": "Традиционная лодочка с сыром, маслом и яйцом"
     },
     {
       "name": "Хинкали (5 шт)",
       "price": "12₾",
-      "description": "Сочные хинкали с мясом/грибами",
-      "photo": "https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=400&h=300&fit=crop"
+      "description": "Сочные хинкали с мясом/грибами"
     },
     {
       "name": "Шашлык из свинины",
       "price": "22₾",
-      "description": "300г сочного мяса с овощами гриль",
-      "photo": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop"
+      "description": "300г сочного мяса с овощами гриль"
     },
     {
       "name": "Чахохбили",
       "price": "20₾",
-      "description": "Курица в томатном соусе с травами",
-      "photo": "https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=300&fit=crop"
+      "description": "Курица в томатном соусе с травами"
     },
     {
       "name": "Оджахури",
       "price": "16₾",
-      "description": "Жареная свинина с картофелем",
-      "photo": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop"
+      "description": "Жареная свинина с картофелем"
     },
     {
       "name": "Лобио",
       "price": "10₾",
-      "description": "Фасоль в остром соусе с орехами",
-      "photo": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop"
+      "description": "Фасоль в остром соусе с орехами"
     },
     {
       "name": "Пхали (3 вида)",
       "price": "14₾",
-      "description": "Шпинат, свекла, баклажан с орехами",
-      "photo": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop"
+      "description": "Шпинат, свекла, баклажан с орехами"
     },
     {
       "name": "Сацебели",
       "price": "8₾",
-      "description": "Домашний грузинский соус",
-      "photo": "https://images.unsplash.com/photo-1472476443507-c7a5948772fc?w=400&h=300&fit=crop"
+      "description": "Домашний грузинский соус"
     },
     {
       "name": "Чурчхела",
       "price": "6₾",
-      "description": "Традиционная сладость из орехов",
-      "photo": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop"
+      "description": "Традиционная сладость из орехов"
     },
     {
       "name": "Хачапури по-имеретински",
       "price": "14₾",
-      "description": "Круглый хачапури с сыром",
-      "photo": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop"
+      "description": "Круглый хачапури с сыром"
     },
     {
       "name": "Сациви",
       "price": "18₾",
-      "description": "Курица в ореховом соусе",
-      "photo": "https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&h=300&fit=crop"
+      "description": "Курица в ореховом соусе"
     },
     {
       "name": "Чакапули",
       "price": "24₾",
-      "description": "Весеннее блюдо из ягненка с эстрагоном",
-      "photo": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=400&h=300&fit=crop"
+      "description": "Весеннее блюдо из ягненка с эстрагоном"
     },
     {
       "name": "Бадриджани нигвзит",
       "price": "12₾",
-      "description": "Рулетики из баклажанов с ореховой пастой",
-      "photo": "https://images.unsplash.com/photo-1529059997568-3d847b1154f0?w=400&h=300&fit=crop"
+      "description": "Рулетики из баклажанов с ореховой пастой"
     },
     {
       "name": "Харчо",
       "price": "15₾",
-      "description": "Острый суп с говядиной и рисом",
-      "photo": "https://images.unsplash.com/photo-1603105037880-880cd4f5b2a6?w=400&h=300&fit=crop"
+      "description": "Острый суп с говядиной и рисом"
     },
     {
       "name": "Детское меню",
       "price": "10₾",
-      "description": "Паста/котлета с картофелем + сок",
-      "photo": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop"
+      "description": "Паста/котлета с картофелем + сок"
     }
   ],
   "knowledge_base": {
