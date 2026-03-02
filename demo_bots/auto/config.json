@@ -1,0 +1,206 @@
+{
+  "business_name": "AutoPlus",
+  "niche": "auto_dealership",
+  "language": "ru",
+  "bot_token": "${BOT_TOKEN}",
+  "gemini_api_key": "${GEMINI_API_KEY}",
+  "owner_telegram_id": "${OWNER_TELEGRAM_ID}",
+  
+  "description": "Официальный дилер автомобилей с полным спектром услуг",
+  
+  "address": "Тбилисское шоссе, 12 км, Рустави",
+  "phone": "+995 555 567 890",
+  "schedule": "Пн-Сб 9:00-19:00, Вс 10:00-17:00",
+  
+  "services": [
+    {
+      "name": "Toyota RAV4 2024",
+      "price": "от 72,000₾",
+      "description": "2.5L, 4WD, бензин, автомат, внедорожник"
+    },
+    {
+      "name": "Hyundai Tucson 2024",
+      "price": "от 65,000₾",
+      "description": "1.6L Turbo, 4WD, бензин, автомат, кроссовер"
+    },
+    {
+      "name": "Kia Sportage 2024",
+      "price": "от 63,000₾",
+      "description": "1.6L T-GDI, 4WD, гибрид, автомат, кроссовер"
+    },
+    {
+      "name": "Toyota Camry 2024",
+      "price": "от 68,000₾",
+      "description": "2.5L, FWD, бензин, автомат, седан премиум-класса"
+    },
+    {
+      "name": "Hyundai Elantra 2024",
+      "price": "от 52,000₾",
+      "description": "2.0L, FWD, бензин, автомат, седан"
+    },
+    {
+      "name": "Kia Sorento 2024",
+      "price": "от 78,000₾",
+      "description": "2.2L Diesel, 4WD, автомат, 7 мест, внедорожник"
+    },
+    {
+      "name": "Mazda CX-5 2024",
+      "price": "от 70,000₾",
+      "description": "2.5L, 4WD, бензин, автомат, кроссовер премиум"
+    },
+    {
+      "name": "Кредит",
+      "price": "от 0% годовых",
+      "description": "Первый взнос от 10%, срок до 7 лет, одобрение за 1 день"
+    },
+    {
+      "name": "Trade-in",
+      "price": "Оценка за 30 минут",
+      "description": "Сдай свой автомобиль в зачет нового, выгодная оценка"
+    },
+    {
+      "name": "Тест-драйв",
+      "price": "Бесплатно",
+      "description": "Испытай любую модель на дороге (30-60 минут)"
+    },
+    {
+      "name": "Техническое обслуживание",
+      "price": "от 150₾",
+      "description": "ТО, диагностика, замена масла, фильтров"
+    },
+    {
+      "name": "Оригинальные запчасти",
+      "price": "По прайсу",
+      "description": "Склад оригинальных запчастей, доставка за 1-3 дня"
+    }
+  ],
+  
+  "knowledge_base": {
+    "business_type": "Автосалон (официальный дилер)",
+    "brands": ["Toyota", "Hyundai", "Kia", "Mazda"],
+    "vehicle_types": ["Седаны", "Кроссоверы", "Внедорожники", "Гибриды"],
+    
+    "available_cars": [
+      {
+        "brand": "Toyota",
+        "model": "RAV4 2024",
+        "price": "от 72,000₾",
+        "engine": "2.5L бензин",
+        "transmission": "Автомат",
+        "drive": "4WD",
+        "type": "Внедорожник",
+        "features": ["Камера 360°", "Apple CarPlay", "Круиз-контроль", "LED-фары"]
+      },
+      {
+        "brand": "Hyundai",
+        "model": "Tucson 2024",
+        "price": "от 65,000₾",
+        "engine": "1.6L Turbo бензин",
+        "transmission": "Автомат",
+        "drive": "4WD",
+        "type": "Кроссовер",
+        "features": ["Панорамная крыша", "Климат-контроль", "Датчики парковки", "Android Auto"]
+      },
+      {
+        "brand": "Kia",
+        "model": "Sportage 2024",
+        "price": "от 63,000₾",
+        "engine": "1.6L T-GDI гибрид",
+        "transmission": "Автомат",
+        "drive": "4WD",
+        "type": "Кроссовер",
+        "features": ["Гибридная система", "Кожаный салон", "Подогрев сидений", "Wireless charging"]
+      },
+      {
+        "brand": "Toyota",
+        "model": "Camry 2024",
+        "price": "от 68,000₾",
+        "engine": "2.5L бензин",
+        "transmission": "Автомат",
+        "drive": "FWD",
+        "type": "Седан премиум",
+        "features": ["JBL аудиосистема", "Кожаный салон", "Адаптивный круиз", "Система безопасности"]
+      },
+      {
+        "brand": "Hyundai",
+        "model": "Elantra 2024",
+        "price": "от 52,000₾",
+        "engine": "2.0L бензин",
+        "transmission": "Автомат",
+        "drive": "FWD",
+        "type": "Седан",
+        "features": ["Сенсорный экран 10.25\"", "Bluetooth", "6 подушек безопасности", "Экономичный"]
+      },
+      {
+        "brand": "Kia",
+        "model": "Sorento 2024",
+        "price": "от 78,000₾",
+        "engine": "2.2L Diesel",
+        "transmission": "Автомат",
+        "drive": "4WD",
+        "type": "Внедорожник 7 мест",
+        "features": ["3 ряда сидений", "Кожаный салон", "Панорамная крыша", "Мощный дизель"]
+      },
+      {
+        "brand": "Mazda",
+        "model": "CX-5 2024",
+        "price": "от 70,000₾",
+        "engine": "2.5L бензин",
+        "transmission": "Автомат",
+        "drive": "4WD",
+        "type": "Кроссовер премиум",
+        "features": ["Bose аудио", "Головной дисплей", "Кожаный салон Nappa", "i-ACTIVSENSE"]
+      }
+    ],
+    
+    "promo": {
+      "name": "Бесплатная диагностика",
+      "description": "Компьютерная диагностика вашего автомобиля бесплатно при обращении через бота",
+      "valid": "Постоянная акция"
+    },
+    
+    "credit": {
+      "available": true,
+      "down_payment_from": "10%",
+      "rate_from": "0% (по акции) / обычно 8-12%",
+      "term_max": "7 лет",
+      "approval_time": "1 день",
+      "partner_banks": ["TBC Bank", "Bank of Georgia", "Liberty Bank"]
+    },
+    
+    "trade_in": {
+      "available": true,
+      "evaluation_time": "30 минут",
+      "benefits": "Выгодная оценка + скидка на новый автомобиль",
+      "process": "Привози авто → Оценка → Сделка в тот же день"
+    },
+    
+    "test_drive": {
+      "available": true,
+      "duration": "30-60 минут",
+      "free": true,
+      "booking": "Запись через бота или по телефону",
+      "requirements": "Водительские права, возраст 21+"
+    },
+    
+    "service_center": {
+      "available": true,
+      "services": [
+        "Техническое обслуживание",
+        "Диагностика",
+        "Ремонт",
+        "Замена масла и фильтров",
+        "Шиномонтаж",
+        "Кузовной ремонт",
+        "Оригинальные запчасти"
+      ],
+      "warranty": "Гарантия на все работы 12 месяцев",
+      "original_parts": true
+    },
+    
+    "payment_methods": ["Наличные", "Карта", "Банковский перевод", "Кредит"],
+    "warranty": "Официальная гарантия 3 года или 100,000 км",
+    "insurance": "Помощь в оформлении КАСКО и ОСАГО",
+    "registration": "Помощь в постановке на учет"
+  }
+}
