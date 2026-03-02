@@ -192,13 +192,13 @@ def create_bot_router(cfg: dict) -> Router:
         "gemini-2.5-flash",
         system_instruction=system_prompt,
     )
-    # Per-user chat sessions (user_id → genai ChatSession)
-    chats: dict[int, genai.ChatSession] = {}
+    # Per-user conversation history
+    histories: dict[int, list] = {}
 
-    def get_chat(user_id: int) -> genai.ChatSession:
-        if user_id not in chats:
-            chats[user_id] = model.start_chat(history=[])
-        return chats[user_id]
+    def get_history(user_id: int) -> list:
+        if user_id not in histories:
+            histories[user_id] = []
+        return histories[user_id]
 
     @router.message(CommandStart())
     async def cmd_start(message: Message, state: FSMContext, bot: Bot):
@@ -281,9 +281,13 @@ def create_bot_router(cfg: dict) -> Router:
                 return
 
             await bot.send_chat_action(message.chat.id, "typing")
-            chat = get_chat(message.from_user.id)
-            resp = await asyncio.to_thread(chat.send_message, text)
+            history = get_history(message.from_user.id)
+            history.append({"role": "user", "parts": [text]})
+            resp = await asyncio.to_thread(
+                model.generate_content, history[-10:]  # last 10 messages for context
+            )
             answer = resp.text
+            history.append({"role": "model", "parts": [answer]})
 
             await message.answer(f"🎤 _{text}_\n\n{answer}", parse_mode="Markdown")
             await _notify_owner(bot, message, text, answer)
@@ -297,9 +301,13 @@ def create_bot_router(cfg: dict) -> Router:
         text = message.text
         await bot.send_chat_action(message.chat.id, "typing")
         try:
-            chat = get_chat(uid)
-            resp = await asyncio.to_thread(chat.send_message, text)
+            history = get_history(uid)
+            history.append({"role": "user", "parts": [text]})
+            resp = await asyncio.to_thread(
+                model.generate_content, history[-10:]
+            )
             answer = resp.text
+            history.append({"role": "model", "parts": [answer]})
         except Exception as e:
             logger.error(f"[{slug}] gemini error: {e}")
             answer = "Извините, произошла ошибка. Попробуйте позже."

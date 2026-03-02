@@ -49,37 +49,44 @@
     {
       "name": "Пхали (3 вида)",
       "price": "14₾",
-      "description": "Шпинат, свекла, баклажан с орехами"
+      "description": "Шпинат, свекла, баклажан с орехами",
+      "photo": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop"
     },
     {
       "name": "Сацебели",
       "price": "8₾",
-      "description": "Домашний грузинский соус"
+      "description": "Домашний грузинский соус",
+      "photo": "https://images.unsplash.com/photo-1472476443507-c7a5948772fc?w=400&h=300&fit=crop"
     },
     {
       "name": "Чурчхела",
       "price": "6₾",
-      "description": "Традиционная сладость из орехов"
+      "description": "Традиционная сладость из орехов",
+      "photo": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop"
     },
     {
       "name": "Хачапури по-имеретински",
       "price": "14₾",
-      "description": "Круглый хачапури с сыром"
+      "description": "Круглый хачапури с сыром",
+      "photo": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop"
     },
     {
       "name": "Сациви",
       "price": "18₾",
-      "description": "Курица в ореховом соусе"
+      "description": "Курица в ореховом соусе",
+      "photo": "https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&h=300&fit=crop"
     },
     {
       "name": "Чакапули",
       "price": "24₾",
-      "description": "Весеннее блюдо из ягненка с эстрагоном"
+      "description": "Весеннее блюдо из ягненка с эстрагоном",
+      "photo": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=400&h=300&fit=crop"
     },
     {
       "name": "Бадриджани нигвзит",
       "price": "12₾",
-      "description": "Рулетики из баклажанов с ореховой пастой"
+      "description": "Рулетики из баклажанов с ореховой пастой",
+      "photo": "https://images.unsplash.com/photo-1529059997568-3d847b1154f0?w=400&h=300&fit=crop"
     },
     {
       "name": "Харчо",
@@ -90,7 +97,8 @@
     {
       "name": "Детское меню",
       "price": "10₾",
-      "description": "Паста/котлета с картофелем + сок"
+      "description": "Паста/котлета с картофелем + сок",
+      "photo": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop"
     }
   ],
   "knowledge_base": {
