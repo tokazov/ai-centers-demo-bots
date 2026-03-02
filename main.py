@@ -152,26 +152,21 @@ async def send_menu(message: Message, bot: Bot, cfg: dict):
     text_services = [s for s in services if not s.get("photo")]
 
     if photo_services:
-        # Send in batches of 10 (Telegram limit for media groups)
-        for i in range(0, len(photo_services), 10):
-            batch = photo_services[i:i+10]
-            media = []
-            for s in batch:
-                caption = f"*{s['name']}* — {s.get('price', '?')}"
-                if s.get("description"):
-                    caption += f"\n{s['description']}"
-                media.append(InputMediaPhoto(
-                    media=s["photo"],
-                    caption=caption,
-                    parse_mode="Markdown"
-                ))
+        # Send individually for reliability
+        for s in photo_services:
+            caption = f"<b>{s['name']}</b> — {s.get('price', '?')}"
+            if s.get("description"):
+                caption += f"\n{s['description']}"
             try:
-                await bot.send_media_group(message.chat.id, media)
+                await bot.send_photo(
+                    message.chat.id,
+                    photo=s["photo"],
+                    caption=caption,
+                    parse_mode="HTML"
+                )
             except Exception as e:
-                logger.error(f"Media group error: {e}")
-                # Fallback to text
-                for s in batch:
-                    await message.answer(f"*{s['name']}* — {s.get('price','?')}\n{s.get('description','')}", parse_mode="Markdown")
+                logger.error(f"Photo send error for {s['name']}: {e}")
+                await message.answer(f"{s['name']} — {s.get('price','?')}\n{s.get('description','')}")
 
     # Remaining services without photos — text list
     if text_services:
