@@ -219,13 +219,36 @@ def create_bot_router(cfg: dict) -> Router:
         "gemini-2.5-flash",
         system_instruction=system_prompt,
     )
-    # Per-user conversation history
-    histories: dict[int, list] = {}
+    # Per-user conversation history (simple text pairs)
+    histories: dict[int, list[dict]] = {}
 
-    def get_history(user_id: int) -> list:
+    def get_history(user_id: int) -> list[dict]:
         if user_id not in histories:
             histories[user_id] = []
         return histories[user_id]
+
+    async def ask_gemini(user_id: int, text: str) -> str:
+        """Send message to Gemini with conversation history."""
+        history = get_history(user_id)
+        # Build contents with history
+        contents = []
+        for h in history[-8:]:  # last 8 messages for context
+            contents.append({"role": h["role"], "parts": [{"text": h["text"]}]})
+        contents.append({"role": "user", "parts": [{"text": text}]})
+
+        resp = await asyncio.to_thread(
+            model.generate_content, contents
+        )
+        answer = resp.text
+
+        # Save to history
+        history.append({"role": "user", "text": text})
+        history.append({"role": "model", "text": answer})
+        # Keep history manageable
+        if len(history) > 20:
+            histories[user_id] = history[-20:]
+
+        return answer
 
     @router.message(CommandStart())
     async def cmd_start(message: Message, state: FSMContext, bot: Bot):
@@ -375,13 +398,7 @@ def create_bot_router(cfg: dict) -> Router:
                 return
 
             await bot.send_chat_action(message.chat.id, "typing")
-            history = get_history(message.from_user.id)
-            history.append({"role": "user", "parts": [text]})
-            resp = await asyncio.to_thread(
-                model.generate_content, history[-10:]  # last 10 messages for context
-            )
-            answer = resp.text
-            history.append({"role": "model", "parts": [answer]})
+            answer = await ask_gemini(message.from_user.id, text)
 
             await message.answer(f"🎤 _{text}_\n\n{answer}", parse_mode="Markdown")
             await _notify_owner(bot, message, text, answer)
@@ -395,13 +412,7 @@ def create_bot_router(cfg: dict) -> Router:
         text = message.text
         await bot.send_chat_action(message.chat.id, "typing")
         try:
-            history = get_history(uid)
-            history.append({"role": "user", "parts": [text]})
-            resp = await asyncio.to_thread(
-                model.generate_content, history[-10:]
-            )
-            answer = resp.text
-            history.append({"role": "model", "parts": [answer]})
+            answer = await ask_gemini(uid, text)
         except Exception as e:
             logger.error(f"[{slug}] gemini error: {e}")
             answer = "Извините, произошла ошибка. Попробуйте позже."
