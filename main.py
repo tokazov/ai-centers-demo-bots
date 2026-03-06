@@ -416,7 +416,19 @@ def create_bot_router(cfg: dict) -> Router:
         except Exception as e:
             logger.error(f"[{slug}] gemini error: {e}")
             answer = "Извините, произошла ошибка. Попробуйте позже."
-        await message.answer(answer)
+        # Convert markdown to HTML for Telegram
+        import re as _re
+        answer_html = answer
+        answer_html = _re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', answer_html, flags=_re.DOTALL)
+        answer_html = _re.sub(r'(?<![*<])\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<i>\1</i>', answer_html)
+        answer_html = _re.sub(r'^#{1,6}\s+(.+)$', r'<b>\1</b>', answer_html, flags=_re.MULTILINE)
+        answer_html = _re.sub(r'^[-*]\s+', '• ', answer_html, flags=_re.MULTILINE)
+        answer_html = _re.sub(r'<(?!/?(?:b|i|code|pre|a|u|s|em|strong|blockquote)\b)[^>]+>', '', answer_html)
+        answer_html = _re.sub(r'\*{1,2}', '', answer_html)
+        try:
+            await message.answer(answer_html, parse_mode="HTML")
+        except Exception:
+            await message.answer(answer)
         await _notify_owner(bot, message, text, answer)
 
     async def _notify_owner(bot: Bot, message: Message, question: str, answer: str):
